@@ -155,4 +155,23 @@ public class Main {
         return polygons;
 
     }
+
+    private void drawTriangle(){
+
+    }
+
+    private ArrayList<Double> evaluateBarycentricCoordinates(int x, int y, double x0, double y0, double x1, double y1, double x2, double y2){
+        double v = (x0 - x2) * (y1 - y2) - (x1 - x2) * (y0 - y2);
+
+        double lambda0 = ((x-x2)*(y1-y2)-(x1-x2)*(y-y2))/ v;
+        double lambda1 = ((x0 - x2) * (y - y2) - (x - x2) * (y0 - y2)) / v;
+        double lambda2 = 1.0 - lambda0 - lambda1;
+
+        ArrayList<Double> result = new ArrayList<>();
+        result.add(lambda0);
+        result.add(lambda1);
+        result.add(lambda2);
+
+        return result;
+    }
 }
