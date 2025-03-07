@@ -7,9 +7,7 @@ import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.*;
-import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.Objects;
 
 public class Main {
@@ -34,7 +32,7 @@ public class Main {
     private static BufferedImage createRotated(BufferedImage image)
     {
         AffineTransform at = AffineTransform.getRotateInstance(
-                Math.PI, image.getWidth()/2, image.getHeight()/2.0);
+                Math.PI, image.getWidth()/2.0, image.getHeight()/2.0);
         return createTransformed(image, at);
     }
 

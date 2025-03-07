@@ -4,11 +4,10 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 
 public class ImageWriter {
-    private ModelObjectReader objectReader;
-    private ImageDrawer methodDraw;
+    private final ImageDrawer methodDraw;
 
     public ImageWriter(File pathToObject) {
-        objectReader = new ModelObjectReader(pathToObject);
+        ModelObjectReader objectReader = new ModelObjectReader(pathToObject);
         methodDraw = new ImageDrawTriangle(objectReader.getPolygons());
     }
 

@@ -9,7 +9,7 @@ import static java.lang.Math.*;
 import static java.lang.Math.ceil;
 
 public class ImageDrawTriangle implements ImageDrawer {
-    private ArrayList<Polygon> polygons;
+    private final ArrayList<Polygon> polygons;
 
     public ImageDrawTriangle(ArrayList<Polygon> polygons) {
         this.polygons = polygons;

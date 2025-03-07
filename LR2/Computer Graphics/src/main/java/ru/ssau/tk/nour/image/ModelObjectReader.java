@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class ModelObjectReader {
-    private File objectModel;
+    private final File objectModel;
     private ArrayList<Point3D> vertices;
     private ArrayList<Polygon> polygons;
 
