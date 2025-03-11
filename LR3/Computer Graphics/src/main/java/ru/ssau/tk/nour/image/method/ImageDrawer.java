@@ -1,4 +1,4 @@
-package ru.ssau.tk.nour.image;
+package ru.ssau.tk.nour.image.method;
 
 import java.awt.image.BufferedImage;
 

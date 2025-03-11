@@ -1,6 +1,9 @@
 package ru.ssau.tk.nour.image;
 
 import ru.ssau.tk.nour.exceptions.NotObjectFileException;
+import ru.ssau.tk.nour.image.data.Point3D;
+import ru.ssau.tk.nour.image.data.Polygon;
+import ru.ssau.tk.nour.image.other.ImageScale;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -50,7 +53,7 @@ public class ModelObjectReader {
                     double y = Double.parseDouble(parts[2]);
                     double z = Double.parseDouble(parts[3]);
 
-                    Point3D point = new Point3D(9000*x+500,9000*y,9000*z);
+                    Point3D point = new Point3D(x,y,z);
                     vertices.add(point);
                 }
             }

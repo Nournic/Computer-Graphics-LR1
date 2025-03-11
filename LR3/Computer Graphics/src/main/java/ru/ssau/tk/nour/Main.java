@@ -1,5 +1,7 @@
 package ru.ssau.tk.nour;
 
+import ru.ssau.tk.nour.image.other.ImageRotate;
+import ru.ssau.tk.nour.image.other.ImageScale;
 import ru.ssau.tk.nour.image.ImageWriter;
 
 import javax.imageio.ImageIO;
@@ -20,11 +22,23 @@ public class Main {
             throw new RuntimeException("Missing path to obj file");
         }
 
-        ImageWriter writer = new ImageWriter(file);
+        int width = 1000;
+        int height = 1000;
+
+        ImageScale imageScale = new ImageScale.Builder()
+                .scaleX(9000).scaleY(9000).scaleZ(9000)
+                .shiftX(width/2.0).shiftY(height/2.0)
+                .shiftPointY(-0.05)
+                .build();
+
+        ImageRotate rotate = new ImageRotate.Builder()
+                .gamma(Math.PI/2.0).build();
+
+        ImageWriter writer = new ImageWriter(file, imageScale, rotate);
         BufferedImage img = writer.getImage(1000,1000);
         img = createRotated(img);
 
-        out = new File("C:\\Games\\image.jpg");
+        out = new File("C:\\Games\\image1.jpg");
 
         ImageIO.write(img, "jpg", out);
     }
@@ -34,6 +48,7 @@ public class Main {
         AffineTransform at = AffineTransform.getRotateInstance(
                 Math.PI, image.getWidth()/2.0, image.getHeight()/2.0);
         return createTransformed(image, at);
+
     }
 
     private static BufferedImage createTransformed(

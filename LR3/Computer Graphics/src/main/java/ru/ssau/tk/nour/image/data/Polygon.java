@@ -1,4 +1,4 @@
-package ru.ssau.tk.nour.image;
+package ru.ssau.tk.nour.image.data;
 
 public class Polygon {
     private final Point3D onePoint;
