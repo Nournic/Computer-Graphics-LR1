@@ -82,28 +82,36 @@ public class ImageRotate implements ImageTransform{
     public ArrayList<Polygon> transform(ArrayList<Polygon> polygons) {
         ArrayList<Polygon> newPolygons = new ArrayList<>();
 
+        Matrix3 zTransform = new Matrix3(new double[]{
+                Math.cos(gamma), Math.sin(gamma), 0,
+                -Math.sin(gamma), Math.cos(gamma), 0,
+                0, 0, 1
+        });
+
+        Matrix3 yTransform = new Matrix3(new double[] {
+                Math.cos(beta), 0, -Math.sin(beta),
+                0, 1, 0,
+                Math.sin(beta), 0, Math.cos(beta)
+        });
+        Matrix3 xTransform = new Matrix3(new double[] {
+                1, 0, 0,
+                0, Math.cos(alpha), Math.sin(alpha),
+                0, -Math.sin(alpha), Math.cos(alpha)
+        });
+
+        Matrix3 transform = xTransform.multiply(yTransform.multiply(zTransform));
+
         for (Polygon plg: polygons)
-            newPolygons.add(transformPolygon(plg));
+            newPolygons.add(transformPolygon(plg, transform));
 
         return newPolygons;
     }
 
-    private Polygon transformPolygon(Polygon plg){
-        Point3D p1 = new Point3D(
-                plg.getOnePoint().getX() * Math.cos(beta) * Math.cos(gamma),
-                plg.getOnePoint().getY() * Math.cos(alpha) * Math.cos(gamma),
-                plg.getOnePoint().getZ() * Math.cos(alpha) * Math.cos(beta)
-        );
-        Point3D p2 = new Point3D(
-                plg.getTwoPoint().getX() * Math.cos(beta) * Math.cos(gamma),
-                plg.getTwoPoint().getY() * Math.cos(alpha) * Math.cos(gamma),
-                plg.getTwoPoint().getZ() * Math.cos(alpha) * Math.cos(beta)
-        );
-        Point3D p3 = new Point3D(
-                plg.getThreePoint().getX() * Math.cos(beta) * Math.cos(gamma),
-                plg.getThreePoint().getY() * Math.cos(alpha) * Math.cos(gamma),
-                plg.getThreePoint().getZ() * Math.cos(alpha) * Math.cos(beta)
-        );
+
+    private Polygon transformPolygon(Polygon plg, Matrix3 transform){
+        Point3D p1 = transform.transform(plg.getOnePoint());
+        Point3D p2 = transform.transform(plg.getTwoPoint());
+        Point3D p3 = transform.transform(plg.getThreePoint());
 
         return new Polygon(p1,p2,p3);
     }

@@ -3,9 +3,9 @@ package ru.ssau.tk.nour.image.data;
 import ru.ssau.tk.nour.image.other.ImageScale;
 
 public class Point3D {
-    private final double x;
-    private final double y;
-    private final double z;
+    private double x;
+    private double y;
+    private double z;
 
     /**
      * Конструктор <code>Point3D</code>, принимающий значения трёх координат точек в пространстве.
@@ -26,9 +26,9 @@ public class Point3D {
      * @param scale объект типа <code>ImageScale</code>, задающий смещение и масштабирование точки
      */
     public Point3D(Point3D point, ImageScale scale){
-        this.x = scale.getScaleX() * (point.x + scale.getShiftPointX()) + scale.getShiftX();
-        this.y = scale.getScaleY() * (point.y + scale.getShiftPointY()) + scale.getShiftY();
-        this.z = scale.getScaleZ() * (point.z + scale.getShiftPointZ()) + scale.getShiftZ();
+        this.x = scale.getScaleX() * (point.x / point.z) + scale.getShiftX();
+        this.y = scale.getScaleY() * (point.y / point.z) + scale.getShiftY();
+        this.z = scale.getScaleZ() * (point.z) + scale.getShiftZ();
     }
 
     public double getX() {
@@ -39,5 +39,17 @@ public class Point3D {
     }
     public double getZ() {
         return z;
+    }
+
+    public void setX(double x) {
+        this.x = x;
+    }
+
+    public void setY(double y) {
+        this.y = y;
+    }
+
+    public void setZ(double z) {
+        this.z = z;
     }
 }

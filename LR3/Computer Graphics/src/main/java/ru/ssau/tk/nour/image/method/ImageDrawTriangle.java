@@ -3,6 +3,7 @@ package ru.ssau.tk.nour.image.method;
 import ru.ssau.tk.nour.image.data.Point3D;
 import ru.ssau.tk.nour.image.data.Polygon;
 import ru.ssau.tk.nour.image.other.ImageScale;
+import ru.ssau.tk.nour.image.other.ImageShift;
 import ru.ssau.tk.nour.image.other.ImageTransform;
 
 import java.awt.*;
@@ -41,14 +42,19 @@ public class ImageDrawTriangle implements ImageDrawer {
             }
         }
 
+        ImageShift shift = new ImageShift(0, -0.04, 0.2);
+
 
         if(transform != null)
-            this.polygons = transform.transform(polygons);
+            this.polygons = transform.transform(this.polygons);
 
-        this.polygons = scalePolygons(polygons);
+        this.polygons = shift.transform(this.polygons);
 
-        for (Polygon plg: polygons)
-            drawTriangle(img,zBuffer,plg);
+        ArrayList<Polygon> newPolygons = this.polygons;
+        newPolygons = scalePolygons(newPolygons);
+
+        for (int i = 0; i < newPolygons.size(); i++)
+            drawTriangle(img,zBuffer,newPolygons.get(i), this.polygons.get(i));
         
         return img;
     }
@@ -67,7 +73,7 @@ public class ImageDrawTriangle implements ImageDrawer {
         return newPolygons;
     }
 
-    private boolean drawTriangle(BufferedImage img, double[][] zBuffer, Polygon plg){
+    private boolean drawTriangle(BufferedImage img, double[][] zBuffer, Polygon plg, Polygon oldPlg){
         Point3D p1 = plg.getOnePoint();
         Point3D p2 = plg.getTwoPoint();
         Point3D p3 = plg.getThreePoint();
@@ -82,10 +88,13 @@ public class ImageDrawTriangle implements ImageDrawer {
                 ? img.getHeight(): max(max(p1.getY(), p2.getY()), p3.getY());
 
         Vector<Double> norm = new Vector<>();
+        Point3D op1 = oldPlg.getOnePoint();
+        Point3D op2 = oldPlg.getTwoPoint();
+        Point3D op3 = oldPlg.getThreePoint();
 
-        norm.add((p2.getZ()-p3.getZ())*p1.getY() +(-p1.getZ()+p3.getZ())*p2.getY()+p3.getY()*(p1.getZ()-p2.getZ()));
-        norm.add((-p2.getZ()+p3.getZ())*p1.getX()+(p1.getZ()-p3.getZ())*p2.getX()-p3.getX()*(p1.getZ()-p2.getZ()));
-        norm.add((p2.getY()-p3.getY())*p1.getX()+(-p1.getY()+p3.getY())*p2.getX()+p3.getX()*(p1.getY()-p2.getY()));
+        norm.add((op2.getZ()-op3.getZ())*op1.getY() +(-op1.getZ()+op3.getZ())*op2.getY()+op3.getY()*(op1.getZ()-op2.getZ()));
+        norm.add((-op2.getZ()+op3.getZ())*op1.getX()+(op1.getZ()-op3.getZ())*op2.getX()-op3.getX()*(op1.getZ()-op2.getZ()));
+        norm.add((op2.getY()-op3.getY())*op1.getX()+(-op1.getY()+op3.getY())*op2.getX()+op3.getX()*(op1.getY()-op2.getY()));
 
         double nl = getVectorMult(norm.getFirst(),norm.get(1),norm.getLast(),0,0,1);
         double nsm = nl/(getNorm(norm.getFirst(),norm.get(1),norm.getLast()) * getNorm(0,0,1));

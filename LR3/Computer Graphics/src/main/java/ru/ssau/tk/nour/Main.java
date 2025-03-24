@@ -1,5 +1,6 @@
 package ru.ssau.tk.nour;
 
+import ru.ssau.tk.nour.image.other.ImageProjective;
 import ru.ssau.tk.nour.image.other.ImageRotate;
 import ru.ssau.tk.nour.image.other.ImageScale;
 import ru.ssau.tk.nour.image.ImageWriter;
@@ -13,6 +14,9 @@ import java.net.URISyntaxException;
 import java.util.Objects;
 
 public class Main {
+    private final static int width = 1000;
+    private final static int height = 1000;
+
     public static void main(String[] args) throws IOException {
         File file, out;
 
@@ -22,19 +26,16 @@ public class Main {
             throw new RuntimeException("Missing path to obj file");
         }
 
-        int width = 1000;
-        int height = 1000;
-
         ImageScale imageScale = new ImageScale.Builder()
-                .scaleX(9000).scaleY(9000).scaleZ(9000)
-                .shiftX(width/2.0).shiftY(height/2.0)
-                .shiftPointY(-0.05)
+                .scaleX(1800).scaleY(1800).shiftX(width/2.0).shiftY(height/2.0)
                 .build();
 
         ImageRotate rotate = new ImageRotate.Builder()
-                .gamma(Math.PI/2.0).build();
+                .beta(Math.PI/4).alpha(0)
+                .build();
 
         ImageWriter writer = new ImageWriter(file, imageScale, rotate);
+
         BufferedImage img = writer.getImage(1000,1000);
         img = createRotated(img);
 
